@@ -1,0 +1,34 @@
+networks:
+  supermegaproject:
+    driver: bridge
+services:
+  content-db:
+    container_name: content-db
+    environment:
+      - POSTGRES_PASSWORD=O17i6iV3lfJGBzoONFyCJbH6CnVF
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./SQL/postgres/init:/docker-entrypoint-initdb.d
+    networks:
+      - supermegaproject
+  pg-admin:
+    container_name: pg-admin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin73536@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: m5783sfjijURFDkQEvVU187laEOKFm
+    depends_on:
+      - content-db
+    volumes:
+      - pg-admin:/var/lib/pgadmin4/data
+    ports:
+      - "5050:80"
+    networks:
+      - supermegaproject
+volumes:
+  db:
+  pg-admin:
